@@ -23,7 +23,7 @@ git clone https://github.com/andrecristen/planilha-frontend.git
 Criar network:
 
 ````bash
-docker network create services
+docker network create rabbitmq-network
 ````
 
 Build:
