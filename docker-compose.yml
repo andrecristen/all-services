@@ -20,8 +20,6 @@ services:
     container_name: spreadsheet-importer-up-all
     ports:
       - "8001:8001"
-    env_file:
-      - ../spreadsheet-importer/.env
     networks:
       - services
       - rabbitmq-network
