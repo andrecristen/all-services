@@ -10,6 +10,8 @@ services:
       - "8000:8000"
     env_file:
       - ../fastapi-auth/.env
+    networks:
+      - services
 
   spreadsheet-importer:
     build:
@@ -20,6 +22,22 @@ services:
       - "8001:8001"
     env_file:
       - ../spreadsheet-importer/.env
+    networks:
+      - services
+      - rabbitmq-network
+    depends_on:
+      - db
+
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: spreadsheet_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - services
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -32,6 +50,8 @@ services:
       RABBITMQ_DEFAULT_PASS: guest
     env_file:
       - ../notification-service/.env
+    networks:
+      - rabbitmq-network
 
   notification-service:
     build:
@@ -44,7 +64,8 @@ services:
       - rabbitmq
     env_file:
       - ../notification-service/.env
-
+    networks:
+      - rabbitmq-network
 
   planilha-frontend:
     build:
@@ -55,3 +76,14 @@ services:
       - "3000:80"
     env_file:
       - ../planilha-frontend/.env
+    networks:
+      - services
+
+networks:
+  services:
+    external: true
+  rabbitmq-network:
+    external: true
+
+volumes:
+  postgres_data:
