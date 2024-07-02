@@ -44,7 +44,7 @@ jobs:
             docker build -t all-services .
           when: always
 
-      - run:
+       - run:
           name: Exibir Imagens Docker
           command: docker images
 
