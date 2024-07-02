@@ -38,10 +38,15 @@ jobs:
             docker network create services
             docker network create rabbitmq-network
 
-      - run:
+       - run:
           name: Construir a Imagem Docker
           command: |
             docker build -t all-services .
+          when: always
+
+      - run:
+          name: Exibir Imagens Docker
+          command: docker images
 
       - run:
           name: Executar Testes na Imagem Docker
