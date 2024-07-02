@@ -43,6 +43,10 @@ jobs:
       - run:
           name: Create Docker Network (rabbitmq-network)
           command: docker network create rabbitmq-network
+          
+      - run:
+          name: Verificar variavéis de ambiente
+          command: printenv
 
       - run:
           name: Verificar Instalação do Docker Compose
