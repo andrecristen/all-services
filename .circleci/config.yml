@@ -23,10 +23,18 @@ jobs:
       - run:
           name: Clonar Repositórios Adicionais
           command: |
-            git clone https://github.com/Lucaslgbr/fastapi-auth.git
-            git clone https://github.com/Lucaslgbr/spreadsheet-importer.git
-            git clone https://github.com/andrecristen/notification-service.git
-            git clone https://github.com/andrecristen/planilha-frontend.git
+            git clone git@github.com:Lucaslgbr/fastapi-auth.git
+            git clone git@github.com:Lucaslgbr/spreadsheet-importer.git
+            git clone git@github.com:andrecristen/notification-service.git
+            git clone git@github.com:andrecristen/planilha-frontend.git
+
+      - run:
+          name: Verificar Clonagem de Repositórios
+          command: |
+            if [ ! -d "spreadsheet-importer" ]; then
+              echo "Erro: Diretório 'spreadsheet-importer' não encontrado!"
+              exit 1
+            fi
 
       - run:
           name: Listar Diretórios
@@ -39,6 +47,8 @@ jobs:
       - run:
           name: Instalar Docker Compose
           command: |
+            sudo apt-get update
+            sudo apt-get install -y curl
             sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
             sudo chmod +x /usr/local/bin/docker-compose
 
@@ -50,6 +60,10 @@ jobs:
           name: Construir e Iniciar Serviços com Docker Compose
           command: docker-compose up --build -d
 
+  test:
+    docker:
+      - image: circleci/node:latest
+    steps:
       - run:
           name: Executar Testes
           command: docker-compose run all-services npm test
@@ -63,3 +77,6 @@ workflows:
   build_and_test:
     jobs:
       - build
+      - test:
+          requires:
+            - build
