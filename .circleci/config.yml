@@ -23,26 +23,19 @@ jobs:
       - run:
           name: Clonar Repositórios Adicionais
           command: |
+            cd ..
             git clone git@github.com:Lucaslgbr/fastapi-auth.git
             git clone git@github.com:Lucaslgbr/spreadsheet-importer.git
             git clone git@github.com:andrecristen/notification-service.git
             git clone git@github.com:andrecristen/planilha-frontend.git
 
       - run:
-          name: Verificar Clonagem de Repositórios
-          command: |
-            if [ ! -d "spreadsheet-importer" ]; then
-              echo "Erro: Diretório 'spreadsheet-importer' não encontrado!"
-              exit 1
-            fi
-
-      - run:
           name: Listar Diretórios
-          command: ls -R
+          command: ls -R ..
 
       - run:
           name: Verificar Conteúdo do Diretório Raiz
-          command: ls -la
+          command: ls -la ..
 
       - run:
           name: Instalar Docker Compose
@@ -58,7 +51,9 @@ jobs:
 
       - run:
           name: Construir e Iniciar Serviços com Docker Compose
-          command: docker-compose up --build -d
+          command: |
+            cd ..
+            docker-compose up --build -d
 
   test:
     docker:
@@ -66,11 +61,15 @@ jobs:
     steps:
       - run:
           name: Executar Testes
-          command: docker-compose run all-services npm test
+          command: |
+            cd ..
+            docker-compose run all-services npm test
 
       - run:
           name: Parar e Remover Serviços
-          command: docker-compose down
+          command: |
+            cd ..
+            docker-compose down
 
 workflows:
   version: 2
