@@ -31,10 +31,6 @@ jobs:
             cd -
 
       - run:
-          name: Listar Diretórios
-          command: ls -R ..
-
-      - run:
           name: Verificar Conteúdo do Diretório Raiz
           command: ls -la ..
 
