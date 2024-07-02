@@ -42,7 +42,7 @@ jobs:
 
       - run:
           name: Iniciar Serviços com Docker Compose
-          command: docker-compose up -d
+          command: docker compose up --build
 
       - run:
           name: Executar Testes
