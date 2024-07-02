@@ -2,6 +2,7 @@ version: '3.8'
 
 services:
   fastapi-auth:
+    container_name: fastapi-auth-up-all
     build:
       context: ../fastapi-auth
       dockerfile: Dockerfile  
@@ -65,6 +66,7 @@ services:
     # env_file:
     #   - ../notification-service/.env
     networks:
+      - services
       - rabbitmq-network
 
   notification-service:
@@ -79,6 +81,7 @@ services:
     # env_file:
     #   - ../notification-service/.env
     networks:
+      - services
       - rabbitmq-network
 
   planilha-frontend:
@@ -90,6 +93,33 @@ services:
       - "3000:80"
     # env_file:
     #   - ../planilha-frontend/.env
+    networks:
+      - services
+
+  
+  prometheus:
+    image: prom/prometheus:latest
+    restart: unless-stopped
+    container_name: prometheus
+    ports:
+      - 9090:9090
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - services
+      
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    restart: unless-stopped
+    depends_on:
+      - prometheus
+    ports:  
+      - 3001:3000
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning
+    env_file:
+      - ./grafana/config.monitoring
     networks:
       - services
 
