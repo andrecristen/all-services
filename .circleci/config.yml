@@ -23,10 +23,12 @@ jobs:
       - run:
           name: Clonar Repositórios Adicionais
           command: |
+            cd ..
             git clone https://github.com/Lucaslgbr/fastapi-auth.git
             git clone https://github.com/Lucaslgbr/spreadsheet-importer.git
             git clone https://github.com/andrecristen/notification-service.git
             git clone https://github.com/andrecristen/planilha-frontend.git
+            cd -
 
       - run:
           name: Listar Diretórios
@@ -48,7 +50,7 @@ jobs:
 
       - run:
           name: Construir e Iniciar Serviços com Docker Compose
-          command: docker-compose up -d
+          command: docker-compose up --build -d
 
       - run:
           name: Executar Testes
