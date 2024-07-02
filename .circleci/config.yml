@@ -15,7 +15,7 @@ jobs:
 
       - add_ssh_keys:
           fingerprints:
-            - "your-ssh-fingerprint-here" # Adicione a digital do seu SSH
+            - "SHA256:SsIaTHn3fn6gZjNvpvSxK/sfdVP5xbGt0XsOj/spVJY"
 
       - run:
           name: Clonar Repositórios Adicionais
