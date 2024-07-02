@@ -4,6 +4,8 @@ jobs:
   build:
     docker:
       - image: circleci/node:latest
+        # Aumentar recursos do executor (opcional)
+        resource_class: large
     steps:
       - checkout
 
@@ -28,6 +30,7 @@ jobs:
             git clone git@github.com:Lucaslgbr/spreadsheet-importer.git
             git clone git@github.com:andrecristen/notification-service.git
             git clone git@github.com:andrecristen/planilha-frontend.git
+            cd -
 
       - run:
           name: Listar Diretórios
@@ -52,12 +55,20 @@ jobs:
       - run:
           name: Construir e Iniciar Serviços com Docker Compose
           command: |
+            cd ..
             docker-compose up --build -d
 
   test:
     docker:
       - image: circleci/node:latest
+        resource_class: large
     steps:
+      - run:
+          name: Atualizar pip
+          command: |
+            cd ..
+            python3 -m pip install --upgrade pip
+
       - run:
           name: Executar Testes
           command: |
