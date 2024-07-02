@@ -28,11 +28,11 @@ jobs:
       - run:
           name: Instalar Dependências
           command: |
-            cd fastapi-auth && npm install && cd ..
-            cd spreadsheet-importer && npm install && cd ..
+            cd fastapi-auth && pip install -r requirements.txt && cd ..
+            cd spreadsheet-importer && pip install -r requirements.txt && cd ..
             cd notification-service && npm install && cd ..
             cd planilha-frontend && npm install && cd ..
-            cd all-services && npm install
+            cd all-services
 
       - run:
           name: Executar Testes
