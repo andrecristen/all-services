@@ -66,17 +66,18 @@ jobs:
       - run:
           name: Atualizar pip
           command: |
-            cd ..
             python3 -m pip install --upgrade pip
 
       - run:
           name: Executar Testes
           command: |
+            cd ..
             docker-compose run all-services npm test
 
       - run:
           name: Parar e Remover Serviços
           command: |
+            cd ..
             docker-compose down
 
 workflows:
