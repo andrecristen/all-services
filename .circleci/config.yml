@@ -35,6 +35,14 @@ jobs:
           command: |
             sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
             sudo chmod +x /usr/local/bin/docker-compose
+            
+      - run:
+          name: Create Docker Network (services)
+          command: docker network create services
+            
+      - run:
+          name: Create Docker Network (rabbitmq-network)
+          command: docker network create rabbitmq-network
 
       - run:
           name: Verificar Instalação do Docker Compose
