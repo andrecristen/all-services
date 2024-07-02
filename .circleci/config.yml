@@ -37,28 +37,22 @@ jobs:
           command: ls -la
 
       - run:
-          name: Criar Redes Docker
+          name: Instalar Docker Compose
           command: |
-            docker network create services
-            docker network create rabbitmq-network
+            curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+            chmod +x /usr/local/bin/docker-compose
 
       - run:
-          name: Construir a Imagem Docker
-          command: docker build -t all-services .
+          name: Construir e Iniciar Serviços com Docker Compose
+          command: docker-compose up --build -d
 
       - run:
-          name: Exibir Imagens Docker
-          command: docker images
+          name: Executar Testes
+          command: docker-compose run all-services npm test
 
       - run:
-          name: Executar Testes na Imagem Docker
-          command: docker run --network services all-services npm test
-
-      - run:
-          name: Remover Redes Docker
-          command: |
-            docker network rm services
-            docker network rm rabbitmq-network
+          name: Parar e Remover Serviços
+          command: docker-compose down
 
 workflows:
   version: 2
