@@ -62,8 +62,8 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
-    env_file:
-      - ../notification-service/.env
+    # env_file:
+    #   - ../notification-service/.env
     networks:
       - rabbitmq-network
 
@@ -76,8 +76,8 @@ services:
       - "8080:8080"
     depends_on:
       - rabbitmq
-    env_file:
-      - ../notification-service/.env
+    # env_file:
+    #   - ../notification-service/.env
     networks:
       - rabbitmq-network
 
@@ -88,8 +88,8 @@ services:
     container_name: planilha-frontend-up-all
     ports:
       - "3000:80"
-    env_file:
-      - ../planilha-frontend/.env
+    # env_file:
+    #   - ../planilha-frontend/.env
     networks:
       - services
 
