@@ -1,21 +1,25 @@
 version: 2.1
+
 jobs:
   build:
     docker:
       - image: circleci/node:latest
-        resource_class: large
     steps:
       - checkout
+
       - setup_remote_docker:
           version: 20.10.7
+
       - run:
           name: Configurar SSH
           command: |
             mkdir -p ~/.ssh
             ssh-keyscan github.com >> ~/.ssh/known_hosts
+
       - add_ssh_keys:
           fingerprints:
-            - SHA256:SsIaTHn3fn6gZjNvpvSxK/sfdVP5xbGt0XsOj/spVJY
+            - "SHA256:SsIaTHn3fn6gZjNvpvSxK/sfdVP5xbGt0XsOj/spVJY"
+
       - run:
           name: Clonar Repositórios Adicionais
           command: |
@@ -25,49 +29,53 @@ jobs:
             git clone git@github.com:andrecristen/notification-service.git
             git clone git@github.com:andrecristen/planilha-frontend.git
             cd -
+
       - run:
           name: Listar Diretórios
           command: ls -R ..
+
       - run:
           name: Verificar Conteúdo do Diretório Raiz
           command: ls -la ..
+
       - run:
           name: Instalar Docker Compose
-          command: >
+          command: |
             sudo apt-get update
-
             sudo apt-get install -y curl
-
             sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-
             sudo chmod +x /usr/local/bin/docker-compose
+
       - run:
           name: Verificar Instalação do Docker Compose
           command: docker-compose --version
+
       - run:
           name: Construir e Iniciar Serviços com Docker Compose
           command: |
             cd ..
             docker-compose up --build -d
+
   test:
     docker:
       - image: circleci/node:latest
-        resource_class: large
     steps:
       - run:
           name: Atualizar pip
-          command: |
-            python3 -m pip install --upgrade pip
+          command: python3 -m pip install --upgrade pip
+
       - run:
           name: Executar Testes
           command: |
             cd ..
             docker-compose run all-services npm test
+
       - run:
           name: Parar e Remover Serviços
           command: |
             cd ..
             docker-compose down
+
 workflows:
   version: 2
   build_and_test:
