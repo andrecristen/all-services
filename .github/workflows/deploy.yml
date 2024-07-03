@@ -24,28 +24,12 @@ jobs:
       - name: Build Docusaurus site
         run: npm run build
 
-      - name: Configure Git
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: Create GitHub Deployment
-        id: deployment
-        run: |
-          response=$(curl -X POST \
-            -H "Authorization: token ${{ secrets.GH_PAT }}" \
-            -H "Accept: application/vnd.github.v3+json" \
-            https://api.github.com/repos/${{ github.repository }}/deployments \
-            -d '{"ref": "${{ github.sha }}", "environment": "production", "description": "Deploying Docusaurus site", "required_contexts": []}')
-          echo "deployment_id=$(echo $response | jq -r .id)" >> $GITHUB_ENV
-
       - name: Deploy to GitHub Pages
-        run: npm run deploy
-        env:
-          GIT_USER: ${{ secrets.GH_PAT }}
-          USE_SSH: false
-          DEPLOYMENT_BRANCH: gh-pages
-          GIT_PASS: ${{ secrets.GH_PAT }}
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
+          publish_branch: gh-pages
 
       - name: Update Deployment Status to Success
         if: success()
