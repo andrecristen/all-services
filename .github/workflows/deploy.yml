@@ -46,13 +46,15 @@ jobs:
           path: ./website/build
 
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GH_PAT }}
-          publish_dir: ./website/build
-          publish_branch: gh-pages
-          user_name: 'andrecristen'
-          user_email: 'andrecristenibirama@gmail.com'
-
-      - name: Verify build artifact
-        run: ls -la ./website/build
+        run: |
+          git config --global user.email "andrecristenibirama@gmail.com"
+          git config --global user.name "andrecristen"
+          git init
+          git remote add origin https://github.com/andrecristen/all-services.git
+          git fetch origin
+          git checkout -b gh-pages
+          rm -rf *
+          cp -r ${{ github.workspace }}/website/build/* .
+          git add .
+          git commit -m "Deploy Docusaurus site"
+          git push --force "https://x-access-token:${{ secrets.GH_PAT }}@github.com/andrecristen/all-services.git" gh-pages
