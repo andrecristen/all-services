@@ -8,4 +8,5 @@ module.exports = {
     favicon: 'img/favicon.ico',
     organizationName: 'andrecristen',
     projectName: 'all-services',
+    trailingSlash: false,
   };  
