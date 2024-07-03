@@ -1,53 +1,31 @@
-name: Deploy Docusaurus
+name: Deploy Docusaurus to GitHub Pages
 
 on:
   push:
     branches:
-      - main  # Ou o branch que você deseja monitorar
+      - main  # Ou a branch que você utiliza para a implantação
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '18'
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
 
-    - name: Install dependencies
-      run: npm ci
+      - name: Install dependencies
+        run: npm install
 
-    - name: Verify Docusaurus installation
-      run: npm list @docusaurus/core
+      - name: Build Docusaurus site
+        run: npm run build
 
-    - name: Build Docusaurus site
-      run: npm run build
-
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: docusaurus-build
-        path: build  # Diretório onde o Docusaurus gera o site
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-
-    - name: Download build artifacts
-      uses: actions/download-artifact@v2
-      with:
-        name: docusaurus-build
-
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./build  # Diretório onde o Docusaurus gera o site
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
