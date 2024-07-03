@@ -10,22 +10,4 @@ module.exports = {
   projectName: 'all-services', // Nome do seu repositório no GitHub
   deploymentBranch: 'gh-pages', // Branch usada para o GitHub Pages
   trailingSlash: false, // ou true, dependendo da sua preferência e configuração
-  presets: [
-    [
-      '@docusaurus/preset-classic',
-      {
-        docs: {
-          sidebarPath: require.resolve('./sidebars.js'),
-          editUrl: 'https://github.com/andrecristen/all-services/edit/main/website/',
-        },
-        blog: {
-          showReadingTime: true,
-          editUrl: 'https://github.com/andrecristen/all-services/edit/main/website/blog/',
-        },
-        theme: {
-          customCss: require.resolve('./src/css/custom.css'),
-        },
-      },
-    ],
-  ],
 };
