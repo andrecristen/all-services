@@ -24,36 +24,7 @@ jobs:
       - name: Build Docusaurus site
         run: npm run build
 
-      - name: Create GitHub Deployment
-        id: deployment
-        run: |
-          response=$(curl -X POST \
-            -H "Authorization: token ${{ secrets.GH_PAT }}" \
-            -H "Accept: application/vnd.github.v3+json" \
-            https://api.github.com/repos/${{ github.repository }}/deployments \
-            -d '{"ref": "${{ github.sha }}", "environment": "production", "description": "Deploying Docusaurus site", "required_contexts": []}')
-          echo "deployment_id=$(echo $response | jq -r .id)" >> $GITHUB_ENV
-
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          GH_PAT: ${{ secrets.GH_PAT }}
-          publish_dir: ./build
-
-      - name: Update Deployment Status to Success
-        if: success()
-        run: |
-          curl -X POST \
-            -H "Authorization: token ${{ secrets.GH_PAT }}" \
-            -H "Accept: application/vnd.github.v3+json" \
-            https://api.github.com/repos/${{ github.repository }}/deployments/${{ env.deployment_id }}/statuses \
-            -d '{"state": "success", "description": "Deployment finished successfully", "environment_url": "https://${{ github.repository_owner }}.github.io/${{ github.repo }}"}'
-
-      - name: Update Deployment Status to Failure
-        if: failure()
-        run: |
-          curl -X POST \
-            -H "Authorization: token ${{ secrets.GH_PAT }}" \
-            -H "Accept: application/vnd.github.v3+json" \
-            https://api.github.com/repos/${{ github.repository }}/deployments/${{ env.deployment_id }}/statuses \
-            -d '{"state": "failure", "description": "Deployment failed"}'
+        run: npm run deploy
+        env:
+          GIT_USER: ${{ secrets.GH_PAT }}
