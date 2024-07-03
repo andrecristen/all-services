@@ -57,7 +57,7 @@ jobs:
           git fetch origin
           git checkout -b gh-pages
           rm -rf *
-          cp -r ${{ github.workspace }}/website/build/* .
+          cp -r ../website/build/* .
           git add .
           git commit -m "Deploy Docusaurus site"
           git push --force "https://x-access-token:${{ secrets.GH_PAT }}@github.com/andrecristen/all-services.git" gh-pages
