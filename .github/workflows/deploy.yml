@@ -19,13 +19,13 @@ jobs:
           node-version: '18'
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build Docusaurus site
         run: npm run build
 
       - name: Deploy to GitHub Pages
-        run: npm run deploy
+        run: |
+          GIT_USER=andrecristen USE_SSH=false npm run deploy
         env:
-          GIT_USER: ${{ secrets.GITHUB_ACTOR }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
