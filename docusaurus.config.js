@@ -9,4 +9,4 @@ module.exports = {
     organizationName: 'andrecristen',
     projectName: 'all-services',
     trailingSlash: false,
-  };  
+};  
