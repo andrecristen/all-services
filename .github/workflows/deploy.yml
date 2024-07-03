@@ -27,7 +27,14 @@ jobs:
         working-directory: ./website
 
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GH_PAT }}
-          publish_dir: ./website/build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          git config --global user.email "andrecristenibirama@gmail.com"
+          git config --global user.name "andrecristen"
+          npm install -g gh-pages
+          cd website/build
+          git init
+          git add .
+          git commit -m "Deploy website"
+          git push --force "https://x-access-token:${{ secrets.GH_PAT }}@github.com/andrecristen/all-services.git" master:gh-pages
