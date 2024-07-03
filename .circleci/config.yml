@@ -74,7 +74,7 @@ jobs:
           name: Deploy do Site do Docusaurus
           command: |
             cd website
-            npx docusaurus deploy --github-token ${GITHUB_TOKEN}
+            npx docusaurus deploy
 
       - run:
           name: Iniciar Serviços com Docker Compose
