@@ -19,13 +19,10 @@ jobs:
           node-version: '18'
 
       - name: Install dependencies
-        run: npm ci
-
-      - name: Install Docusaurus CLI
-        run: npm install @docusaurus/core
+        run: npm install
 
       - name: Build Docusaurus site
-        run: npx docusaurus build
+        run: npm run build
 
       - name: Create GitHub Deployment
         id: deployment
