@@ -70,7 +70,7 @@ jobs:
             cd website
             git config --global user.email "andrecristenibirama@gmail.com"
             git config --global user.name "andrecristen"
-            GIT_USER=andrecristen GITHUB_TOKEN=${GITHUB_TOKEN} npx docusaurus deploy --skip-build --ci --verbose --github-token ${GITHUB_TOKEN}
+            GIT_USER=andrecristen GITHUB_TOKEN=${GITHUB_TOKEN} npx docusaurus deploy --skip-build
 
       - run:
           name: Iniciar Serviços com Docker Compose
