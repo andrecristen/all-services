@@ -1,65 +1,51 @@
-name: Deploy Docusaurus site to GitHub Pages
+name: Deploy Docusaurus
 
 on:
   push:
     branches:
-      - main
-      - develop
+      - main  # Ou o branch que você deseja monitorar
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '18'
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '18'
 
-      - name: Install dependencies
-        run: npm install
-        working-directory: ./website
+    - name: Install dependencies
+      run: npm install
 
-      - name: Build Docusaurus site
-        run: npm run build
-        working-directory: ./website
+    - name: Build Docusaurus site
+      run: npm run build
 
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: docusaurus-build
-          path: ./website/build
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: docusaurus-build
+        path: build  # Diretório onde o Docusaurus gera o site
 
   deploy:
-    runs-on: ubuntu-latest
     needs: build
+    runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      - name: Download build artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: docusaurus-build
+    - name: Download build artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: docusaurus-build
+        path: build  # Diretório onde o artefato será baixado
 
-      - name: List downloaded files for debugging
-        run: ls -la ${{ github.workspace }}
-
-      - name: Deploy to GitHub Pages
-        run: |
-          git config --global user.email "andrecristenibirama@gmail.com"
-          git config --global user.name "andrecristen"
-          if [ -d ".git" ]; then
-            rm -rf .git
-          fi
-          git init
-          git remote add origin https://github.com/andrecristen/all-services.git
-          git fetch origin
-          git checkout -b gh-pages
-          rm -rf *
-          cp -r ${{ github.workspace }}/docusaurus-build/* .
-          git add .
-          git commit -m "Deploy Docusaurus site"
-          git push --force "https://x-access-token:${{ secrets.GH_PAT }}@github.com/andrecristen/all-services.git" gh-pages
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./build  # Diretório onde o Docusaurus gera o site
