@@ -19,10 +19,6 @@ jobs:
         run: npm run build
       - name: Build Docusaurus site
         run: npm run deploy
-        with:
-          github_token: ${{ secrets.GH_PAT }}
-          publish_dir: ./build
-          publish_branch: gh-pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
