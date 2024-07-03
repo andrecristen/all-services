@@ -43,7 +43,9 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: docusaurus-build
-          path: ./website/build
+
+      - name: List downloaded files for debugging
+        run: ls -la ${{ github.workspace }}
 
       - name: Deploy to GitHub Pages
         run: |
@@ -57,7 +59,7 @@ jobs:
           git fetch origin
           git checkout -b gh-pages
           rm -rf *
-          cp -r ../website/build/* .
+          cp -r ${{ github.workspace }}/docusaurus-build/* .
           git add .
           git commit -m "Deploy Docusaurus site"
           git push --force "https://x-access-token:${{ secrets.GH_PAT }}@github.com/andrecristen/all-services.git" gh-pages
