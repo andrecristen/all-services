@@ -65,12 +65,16 @@ jobs:
             npm run build
 
       - run:
+          name: Configurar Usuário Git
+          command: |
+            git config --global user.email "andrecristenibirama@gmail.com"
+            git config --global user.name "andrecristen"
+
+      - run:
           name: Deploy do Site do Docusaurus
           command: |
             cd website
-            git config --global user.email "andrecristenibirama@gmail.com"
-            git config --global user.name "andrecristen"
-            GIT_USER=andrecristen GITHUB_TOKEN=${GITHUB_TOKEN} npx docusaurus deploy --skip-build
+            npx docusaurus deploy --github-token ${GITHUB_TOKEN}
 
       - run:
           name: Iniciar Serviços com Docker Compose
