@@ -49,6 +49,9 @@ jobs:
         run: |
           git config --global user.email "andrecristenibirama@gmail.com"
           git config --global user.name "andrecristen"
+          if [ -d ".git" ]; then
+            rm -rf .git
+          fi
           git init
           git remote add origin https://github.com/andrecristen/all-services.git
           git fetch origin
