@@ -30,7 +30,9 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Deploy to GitHub Pages
-        run: |
-          GIT_USER=andrecristen USE_SSH=false npm run deploy
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GIT_USER: andrecristen
+          GIT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          REMOTE_REPO="https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
+          USE_SSH=false npm run deploy -- --repo $REMOTE_REPO
