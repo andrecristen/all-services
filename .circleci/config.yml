@@ -68,7 +68,7 @@ jobs:
           name: Deploy do Site do Docusaurus
           command: |
             cd website
-            GIT_USER=andrecristen GITHUB_TOKEN=${GITHUB_TOKEN} npm run deploy
+            GIT_USER=andrecristen USE_SSH=true GITHUB_TOKEN=${GITHUB_TOKEN} npx docusaurus deploy --skip-build --ci --verbose --github-token ${GITHUB_TOKEN}
 
       - run:
           name: Iniciar Serviços com Docker Compose
