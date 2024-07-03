@@ -1,7 +1,10 @@
 {
-    "scripts": {
-      "build": "docusaurus build",
-      "deploy": "docusaurus deploy"
-    }
+  "scripts": {
+    "build": "docusaurus build",
+    "deploy": "docusaurus deploy"
+  },
+  "dependencies": {
+    "@docusaurus/core": "^2.0.0",
+    "@docusaurus/preset-classic": "^2.0.0"
   }
-  
+}
