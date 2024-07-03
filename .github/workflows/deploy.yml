@@ -3,7 +3,7 @@ name: Deploy Docusaurus to GitHub Pages
 on:
   push:
     branches:
-      - main 
+      - main  # Ou a branch que você utiliza para a implantação
 
 jobs:
   build:
@@ -43,6 +43,9 @@ jobs:
         run: npm run deploy
         env:
           GIT_USER: ${{ secrets.GH_PAT }}
+          USE_SSH: false
+          DEPLOYMENT_BRANCH: gh-pages
+          GIT_PASS: ${{ secrets.GH_PAT }}
 
       - name: Update Deployment Status to Success
         if: success()
