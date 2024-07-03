@@ -53,30 +53,6 @@ jobs:
           command: docker-compose --version
 
       - run:
-          name: Instalar Dependências do Docusaurus
-          command: |
-            cd website
-            npm install
-
-      - run:
-          name: Build do Site do Docusaurus
-          command: |
-            cd website
-            npm run build
-
-      - run:
-          name: Configurar Usuário Git
-          command: |
-            git config --global user.email "andrecristenibirama@gmail.com"
-            git config --global user.name "andrecristen"
-
-      - run:
-          name: Deploy do Site do Docusaurus
-          command: |
-            cd website
-            GIT_USER=andrecristen GITHUB_TOKEN=${GITHUB_TOKEN} npx docusaurus deploy
-
-      - run:
           name: Iniciar Serviços com Docker Compose
           command: docker-compose up --build
 
