@@ -1,0 +1,17 @@
+- hosts: production
+  tasks:
+    - name: Ensure Docker is running
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Copy docker-compose.yml to server
+      copy:
+        src: ./docker-compose.yml
+        dest: /home/youruser/docker-compose.yml
+
+    - name: Pull and run services
+      command: docker-compose -f /home/youruser/docker-compose.yml up -d
+      args:
+        chdir: /home/youruser
