@@ -53,3 +53,6 @@ jobs:
           publish_branch: gh-pages
           user_name: 'andrecristen'
           user_email: 'andrecristenibirama@gmail.com'
+
+      - name: Verify build artifact
+        run: ls -la ./website/build
